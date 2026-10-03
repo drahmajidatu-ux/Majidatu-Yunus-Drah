@@ -28,11 +28,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
     const matchingStyles = hairstyles.filter(
       (h) =>
-        h.name.toLowerCase().includes(q) ||
-        h.category.toLowerCase().includes(q) ||
-        h.description.toLowerCase().includes(q) ||
-        h.hairMaterialRequired.toLowerCase().includes(q) ||
-        h.availableColours.some((c) => c.toLowerCase().includes(q))
+        !h.isHidden &&
+        (h.name.toLowerCase().includes(q) ||
+          h.category.toLowerCase().includes(q) ||
+          h.description.toLowerCase().includes(q) ||
+          h.hairMaterialRequired.toLowerCase().includes(q) ||
+          h.availableColours.some((c) => c.toLowerCase().includes(q)))
     );
 
     const matchingWigs = wigs.filter(
@@ -90,7 +91,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               Popular Searches
             </span>
             <div className="flex flex-wrap gap-2">
-              {['Knotless braids', 'Bone Straight Wig', 'Ghana weaving', 'Water Wave', 'Lace installation', 'Boho curls', 'Passion twists', 'HD Frontal'].map((tag) => (
+              {['Ghana Braids', 'Ghana Weaving', 'Knotless Braids', 'Cornrows', 'Passion Twists', 'Fulani Braids', 'Butterfly Locs', 'Straight-back', 'Bone Straight Wig'].map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setQuery(tag)}

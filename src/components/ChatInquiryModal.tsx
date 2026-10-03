@@ -75,10 +75,7 @@ export const ChatInquiryModal: React.FC<ChatInquiryModalProps> = ({
     setSubmitted(true);
   };
 
-  const directWhatsAppUrl = createWhatsAppLink(
-    settings.whatsapp,
-    message || 'Hello Crown & Glam! I have a question about your salon hairstyles and wigs.'
-  );
+  const directWhatsAppUrl = 'https://wa.link/ufocc9';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-stone-950/75 backdrop-blur-xs">

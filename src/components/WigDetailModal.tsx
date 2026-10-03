@@ -46,10 +46,7 @@ export const WigDetailModal: React.FC<WigDetailModalProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const whatsappInquiryUrl = createWhatsAppLink(
-    settings.whatsapp,
-    `Hello Crown & Glam! Is "${wig.name}" (${wig.length}, ${wig.texture}, ${formatCurrency(wig.price, wig.currency)}) currently available for immediate pickup or salon installation?`
-  );
+  const whatsappInquiryUrl = 'https://wa.link/ufocc9';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-stone-950/70 backdrop-blur-xs">

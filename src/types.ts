@@ -1,15 +1,13 @@
 export type HairstyleCategory =
   | 'All'
+  | 'Ghanaian Styles'
   | 'Braids'
-  | 'Ghana weaving'
   | 'Cornrows'
-  | 'Knotless braids'
   | 'Twists'
-  | 'Natural hairstyles'
   | 'Locs'
-  | 'Wig installation'
-  | 'Hair extensions'
-  | 'Other hairstyles';
+  | 'Natural Hair'
+  | 'Traditional Styles'
+  | 'Bridal Styles';
 
 export interface Hairstyle {
   id: string;
@@ -22,7 +20,9 @@ export interface Hairstyle {
   hairMaterialRequired: string;
   description: string;
   isAvailable: boolean;
+  isHidden?: boolean;
   imageUrl: string;
+  additionalImages?: string[];
   isTrending?: boolean;
   difficultyOrNotes?: string;
   lengthOption?: string;
@@ -92,4 +92,6 @@ export interface SalonSettings {
   currency: string;
   instagramHandle: string;
   adminPin: string;
+  adminUsername?: string;
+  adminPassword?: string;
 }

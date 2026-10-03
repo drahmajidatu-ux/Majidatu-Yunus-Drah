@@ -256,10 +256,7 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                       Direct Action
                     </td>
                     {compareItems.map(({ item, type }) => {
-                      const whatsappLink = createWhatsAppLink(
-                        settings.whatsapp,
-                        `Hello! I compared "${item.name}" (${formatCurrency(item.price, item.currency)}) on your website and would like to confirm details.`
-                      );
+                      const whatsappLink = 'https://wa.link/ufocc9';
                       return (
                         <td key={item.id} className="p-3 space-y-2">
                           <button

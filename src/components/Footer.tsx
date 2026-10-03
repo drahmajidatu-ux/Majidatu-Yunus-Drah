@@ -5,7 +5,7 @@ import { createWhatsAppLink } from '../utils/formatters';
 
 interface FooterProps {
   settings: SalonSettings;
-  onNavigate: (tab: 'home' | 'hairstyles' | 'wigs' | 'contact' | 'admin') => void;
+  onNavigate: (tabOrRoute: string) => void;
   onOpenBooking: () => void;
   onOpenCompare: () => void;
   compareCount: number;
@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             <div className="flex items-center gap-3 pt-2">
               <a
-                href={createWhatsAppLink(settings.whatsapp, 'Hello Crown & Glam! I am visiting your website.')}
+                href="https://wa.link/ufocc9"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-stone-900 border border-stone-800 text-emerald-400 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-colors"
@@ -210,13 +210,18 @@ export const Footer: React.FC<FooterProps> = ({
           <p>© {new Date().getFullYear()} {settings.salonName}. All rights reserved. Transparent Salon Pricing &amp; Digital Catalogue.</p>
 
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => onNavigate('admin')}
-              className="text-stone-400 hover:text-amber-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+            <a
+              href="/admin/login"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('/admin/login');
+              }}
+              className="text-stone-500 hover:text-amber-400 flex items-center gap-1.5 transition-colors cursor-pointer text-xs"
+              title="Administrator Login"
             >
               <Lock className="w-3.5 h-3.5" />
-              <span>Hairdresser Portal (Admin)</span>
-            </button>
+              <span>Admin Login</span>
+            </a>
           </div>
         </div>
 

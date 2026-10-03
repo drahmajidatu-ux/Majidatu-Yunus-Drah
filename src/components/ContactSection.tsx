@@ -122,12 +122,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 <div>
                   <strong className="block text-stone-900">WhatsApp Desk:</strong>
                   <a
-                    href={createWhatsAppLink(settings.whatsapp, 'Hello! I would like to make an inquiry.')}
+                    href="https://wa.link/ufocc9"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-emerald-700 font-semibold hover:underline block mt-0.5"
                   >
-                    +{settings.whatsapp} (Instant Chat)
+                    Chat on WhatsApp (Instant Response)
                   </a>
                 </div>
               </div>

@@ -6,11 +6,10 @@ export const formatCurrency = (amount: number, currency: string = 'GH₵'): stri
   return `${currency} ${formatted}`;
 };
 
-export const createWhatsAppLink = (phone: string, text: string): string => {
-  // strip non-numeric
-  const cleanPhone = phone.replace(/[^0-9]/g, '');
-  const encoded = encodeURIComponent(text);
-  return `https://wa.me/${cleanPhone}?text=${encoded}`;
+export const CROWN_WHATSAPP_LINK = 'https://wa.link/ufocc9';
+
+export const createWhatsAppLink = (_phone?: string, _text?: string): string => {
+  return CROWN_WHATSAPP_LINK;
 };
 
 export const generateBookingId = (): string => {

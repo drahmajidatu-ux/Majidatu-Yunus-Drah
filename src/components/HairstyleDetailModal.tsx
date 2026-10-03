@@ -46,10 +46,7 @@ export const HairstyleDetailModal: React.FC<HairstyleDetailModalProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const whatsappInquiryUrl = createWhatsAppLink(
-    settings.whatsapp,
-    `Hello Crown & Glam! I am viewing "${style.name}" priced at ${formatCurrency(style.price, style.currency)}. Could you confirm availability and hair pack details for this style?`
-  );
+  const whatsappInquiryUrl = 'https://wa.link/ufocc9';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-stone-950/70 backdrop-blur-xs">

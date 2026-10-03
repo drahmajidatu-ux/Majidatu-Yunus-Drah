@@ -25,16 +25,14 @@ interface HairstyleCatalogueProps {
 
 const CATEGORIES: HairstyleCategory[] = [
   'All',
+  'Ghanaian Styles',
   'Braids',
-  'Ghana weaving',
   'Cornrows',
-  'Knotless braids',
   'Twists',
-  'Natural hairstyles',
   'Locs',
-  'Wig installation',
-  'Hair extensions',
-  'Other hairstyles',
+  'Natural Hair',
+  'Traditional Styles',
+  'Bridal Styles',
 ];
 
 export const HairstyleCatalogue: React.FC<HairstyleCatalogueProps> = ({
@@ -54,6 +52,10 @@ export const HairstyleCatalogue: React.FC<HairstyleCatalogueProps> = ({
   const filteredHairstyles = useMemo(() => {
     return hairstyles
       .filter((style) => {
+        // Hide hidden hairstyles from customer view
+        if (style.isHidden) {
+          return false;
+        }
         // Category filter
         if (selectedCategory !== 'All' && style.category !== selectedCategory) {
           return false;
@@ -166,9 +168,10 @@ export const HairstyleCatalogue: React.FC<HairstyleCatalogueProps> = ({
         <div className="pt-2 border-t border-stone-100">
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
             {CATEGORIES.map((category) => {
+              const visibleStyles = hairstyles.filter((h) => !h.isHidden);
               const count = category === 'All' 
-                ? hairstyles.length 
-                : hairstyles.filter((h) => h.category === category).length;
+                ? visibleStyles.length 
+                : visibleStyles.filter((h) => h.category === category).length;
               const isActive = selectedCategory === category;
 
               return (
@@ -219,7 +222,7 @@ export const HairstyleCatalogue: React.FC<HairstyleCatalogueProps> = ({
 
       {/* Grid of Hairstyles */}
       {filteredHairstyles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
           {filteredHairstyles.map((style) => {
             const inCompare = isItemInCompare ? isItemInCompare(style.id) : false;
             return (
@@ -357,7 +360,7 @@ export const HairstyleCatalogue: React.FC<HairstyleCatalogueProps> = ({
                         className="py-2.5 px-3 rounded-xl bg-stone-900 hover:bg-amber-900 text-white text-xs font-semibold text-center transition-colors shadow-xs hover:shadow cursor-pointer flex items-center justify-center gap-1.5"
                       >
                         <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Book Style</span>
+                        <span>Book Appointment</span>
                       </button>
                     </div>
                   </div>

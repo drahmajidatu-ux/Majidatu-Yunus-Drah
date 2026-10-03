@@ -38,8 +38,76 @@ export function App() {
   const [messages, setMessages] = useState<CustomerMessage[]>(getStoredMessages);
   const [settings, setSettings] = useState<SalonSettings>(getStoredSettings);
 
-  // Navigation tab state
-  const [activeTab, setActiveTab] = useState<'home' | 'hairstyles' | 'wigs' | 'contact' | 'admin'>('home');
+  // URL Path and Route state
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname || '/';
+    }
+    return '/';
+  });
+
+  const navigateRoute = (path: string) => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', path);
+    }
+    setCurrentPath(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Sync with browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname || '/');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const isAdminRoute = currentPath.startsWith('/admin');
+
+  // Check authentication
+  const checkIsAuthenticated = () => {
+    try {
+      return sessionStorage.getItem('crown_admin_auth_v1') === 'true';
+    } catch {
+      return false;
+    }
+  };
+
+  // Protect admin routes: unauthenticated visits to /admin* are redirected to /admin/login
+  useEffect(() => {
+    if (isAdminRoute && !checkIsAuthenticated()) {
+      if (currentPath !== '/admin/login') {
+        window.history.replaceState({}, '', '/admin/login');
+        setCurrentPath('/admin/login');
+      }
+    }
+  }, [currentPath, isAdminRoute]);
+
+  // Active tab derived from current URL path
+  const activeTab: 'home' | 'hairstyles' | 'wigs' | 'contact' | 'admin' = isAdminRoute
+    ? 'admin'
+    : currentPath === '/hairstyles'
+    ? 'hairstyles'
+    : currentPath === '/wigs'
+    ? 'wigs'
+    : currentPath === '/contact'
+    ? 'contact'
+    : 'home';
+
+  const setActiveTab = (tab: string) => {
+    if (tab === 'admin' || tab.startsWith('/admin')) {
+      navigateRoute(tab.startsWith('/admin') ? tab : '/admin');
+    } else if (tab === 'hairstyles') {
+      navigateRoute('/hairstyles');
+    } else if (tab === 'wigs') {
+      navigateRoute('/wigs');
+    } else if (tab === 'contact') {
+      navigateRoute('/contact');
+    } else {
+      navigateRoute('/');
+    }
+  };
 
   // Detail modals
   const [selectedHairstyle, setSelectedHairstyle] = useState<Hairstyle | null>(null);
@@ -72,6 +140,30 @@ export function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeTab]);
+
+  // Ensure WhatsApp and Phone settings are up to date
+  useEffect(() => {
+    if (
+      !settings.whatsapp ||
+      settings.whatsapp !== 'https://wa.link/ufocc9'
+    ) {
+      const updated: SalonSettings = {
+        ...settings,
+        whatsapp: 'https://wa.link/ufocc9',
+      };
+      setSettings(updated);
+      saveStoredSettings(updated);
+    }
+  }, [settings]);
+
+  // Ensure hairstyle catalogue migrates from any legacy format
+  useEffect(() => {
+    if (hairstyles.some((h) => h.id.startsWith('hs-'))) {
+      const freshHairstyles = getStoredHairstyles();
+      setHairstyles(freshHairstyles);
+      saveStoredHairstyles(freshHairstyles);
+    }
+  }, [hairstyles]);
 
   // PERSISTENCE HANDLERS
   const handleUpdateHairstyles = (updated: Hairstyle[]) => {
@@ -186,16 +278,18 @@ export function App() {
       )}
 
       {/* Main Top Navigation */}
-      <Navbar
-        settings={settings}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onOpenBooking={() => handleOpenBooking('hairstyle')}
-        onOpenChat={() => handleOpenChat()}
-        onOpenSearch={() => setIsSearchOpen(true)}
-        compareCount={compareItems.length}
-        onOpenCompare={() => setIsCompareOpen(true)}
-      />
+      {activeTab !== 'admin' && (
+        <Navbar
+          settings={settings}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          onOpenBooking={() => handleOpenBooking('hairstyle')}
+          onOpenChat={() => handleOpenChat()}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          compareCount={compareItems.length}
+          onOpenCompare={() => setIsCompareOpen(true)}
+        />
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1">
@@ -300,6 +394,8 @@ export function App() {
             bookings={bookings}
             messages={messages}
             settings={settings}
+            currentPath={currentPath}
+            onNavigateRoute={navigateRoute}
             onSaveHairstyles={handleUpdateHairstyles}
             onSaveWigs={handleUpdateWigs}
             onSaveBookings={handleUpdateBookings}
@@ -349,7 +445,7 @@ export function App() {
           </button>
 
           <a
-            href={createWhatsAppLink(settings.whatsapp, 'Hello Crown & Glam! I have a question about your hairstyle catalogue and wigs.')}
+            href="https://wa.link/ufocc9"
             target="_blank"
             rel="noopener noreferrer"
             className="w-13 h-13 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow-2xl transition-all hover:scale-110"
@@ -423,13 +519,15 @@ export function App() {
       />
 
       {/* Website Footer */}
-      <Footer
-        settings={settings}
-        onNavigate={setActiveTab}
-        onOpenBooking={() => handleOpenBooking('hairstyle')}
-        onOpenCompare={() => setIsCompareOpen(true)}
-        compareCount={compareItems.length}
-      />
+      {activeTab !== 'admin' && (
+        <Footer
+          settings={settings}
+          onNavigate={setActiveTab}
+          onOpenBooking={() => handleOpenBooking('hairstyle')}
+          onOpenCompare={() => setIsCompareOpen(true)}
+          compareCount={compareItems.length}
+        />
+      )}
 
     </div>
   );

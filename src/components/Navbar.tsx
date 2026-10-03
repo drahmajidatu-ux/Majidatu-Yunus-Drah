@@ -62,15 +62,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Phone className="w-3 h-3 text-amber-400" />
               <span>{settings.phone}</span>
             </a>
-            <span className="text-stone-500 hidden sm:inline">|</span>
-            <button
-              onClick={() => setActiveTab('admin')}
-              className="text-stone-300 hover:text-amber-400 transition-colors flex items-center gap-1 font-medium cursor-pointer"
-              title="Salon Owner Login"
-            >
-              <ShieldCheck className="w-3 h-3 text-amber-400" />
-              <span>Salon Owner</span>
-            </button>
           </div>
         </div>
       </div>
@@ -161,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* WhatsApp Direct */}
             <a
-              href={createWhatsAppLink(settings.whatsapp, 'Hello Crown & Glam! I am browsing your website catalogue and would like to ask a question.')}
+              href="https://wa.link/ufocc9"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-2 rounded-full border border-emerald-600 text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5"
@@ -263,19 +254,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               Contact & Salon Hours
             </button>
-            <button
-              onClick={() => {
-                setActiveTab('admin');
-                setMobileMenuOpen(false);
-              }}
-              className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-amber-900 flex items-center justify-between"
-            >
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-amber-700" />
-                <span>Salon Owner Portal</span>
-              </span>
-              <span className="text-xs bg-amber-200/70 text-amber-950 px-2 py-0.5 rounded">Admin</span>
-            </button>
           </div>
 
           <div className="pt-3 border-t border-stone-200 space-y-2">
@@ -301,7 +279,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>Ask Question</span>
               </button>
               <a
-                href={createWhatsAppLink(settings.whatsapp, 'Hello Crown & Glam! I am browsing your hairstyles & wigs.')}
+                href="https://wa.link/ufocc9"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-semibold flex items-center justify-center gap-1.5"

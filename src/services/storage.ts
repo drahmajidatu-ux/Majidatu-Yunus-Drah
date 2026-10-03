@@ -2,7 +2,7 @@ import { Hairstyle, Wig, Booking, CustomerMessage, SalonSettings } from '../type
 import { initialHairstyles, initialWigs, initialBookings, initialMessages, initialSalonSettings } from '../data/initialData';
 
 const STORAGE_KEYS = {
-  HAIRSTYLES: 'crown_hairstyles_v1',
+  HAIRSTYLES: 'crown_hairstyles_ghana_v4_51',
   WIGS: 'crown_wigs_v1',
   BOOKINGS: 'crown_bookings_v1',
   MESSAGES: 'crown_messages_v1',
@@ -10,10 +10,28 @@ const STORAGE_KEYS = {
   CURRENCY: 'crown_selected_currency_v1',
 };
 
+const MIGRATION_KEY = 'crown_migrated_51_complete_v1';
+
 export const getStoredHairstyles = (): Hairstyle[] => {
   try {
+    const isMigrated = localStorage.getItem(MIGRATION_KEY) === 'true';
     const data = localStorage.getItem(STORAGE_KEYS.HAIRSTYLES);
-    return data ? JSON.parse(data) : initialHairstyles;
+
+    if (!data || !isMigrated) {
+      localStorage.setItem(STORAGE_KEYS.HAIRSTYLES, JSON.stringify(initialHairstyles));
+      localStorage.setItem(MIGRATION_KEY, 'true');
+      return initialHairstyles;
+    }
+
+    const parsed: Hairstyle[] = JSON.parse(data);
+    // If old styles exist, migrate to full authentic Ghanaian hairstyles catalog
+    if (!parsed || !Array.isArray(parsed) || parsed.some((h) => h.id.startsWith('hs-'))) {
+      localStorage.setItem(STORAGE_KEYS.HAIRSTYLES, JSON.stringify(initialHairstyles));
+      localStorage.setItem(MIGRATION_KEY, 'true');
+      return initialHairstyles;
+    }
+
+    return parsed;
   } catch (e) {
     console.error('Failed to load hairstyles from storage', e);
     return initialHairstyles;
@@ -85,7 +103,19 @@ export const saveStoredMessages = (messages: CustomerMessage[]) => {
 export const getStoredSettings = (): SalonSettings => {
   try {
     const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-    return data ? JSON.parse(data) : initialSalonSettings;
+    if (!data) return initialSalonSettings;
+    const settings: SalonSettings = JSON.parse(data);
+    // Sanitize any previous old numbers stored in user's browser localStorage
+    if (
+      !settings.whatsapp ||
+      settings.whatsapp !== 'https://wa.link/ufocc9'
+    ) {
+      settings.whatsapp = 'https://wa.link/ufocc9';
+    }
+    if (!settings.phone || settings.phone !== initialSalonSettings.phone) {
+      settings.phone = initialSalonSettings.phone;
+    }
+    return { ...initialSalonSettings, ...settings };
   } catch (e) {
     console.error('Failed to load settings', e);
     return initialSalonSettings;

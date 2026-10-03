@@ -115,10 +115,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {/* Main Featured Photo */}
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white aspect-[4/5]">
                 <img
-                  src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=1000&q=85"
-                  alt="Knotless Goddess Braids Showcase"
+                  src="/hairstyles/knotless_braids.jpg"
+                  alt="Authentic Knotless Braids Showcase"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
                 
@@ -129,13 +128,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       Client Favorite
                     </span>
                     <h3 className="font-serif font-bold text-sm text-stone-900">
-                      Boho Goddess Knotless Braids
+                      Knotless Braids
                     </h3>
-                    <p className="text-xs text-stone-500">4h 30m • Mid-Back</p>
+                    <p className="text-xs text-stone-500">4h 00m • Waist Length</p>
                   </div>
                   <div className="text-right">
-                    <span className="text-xs text-stone-400 block">Starting at</span>
-                    <span className="font-serif font-bold text-lg text-amber-900">GH₵ 380</span>
+                    <span className="text-xs text-stone-400 block">Salon Price</span>
+                    <span className="font-serif font-bold text-lg text-amber-900">GH₵ 160</span>
                   </div>
                 </div>
               </div>

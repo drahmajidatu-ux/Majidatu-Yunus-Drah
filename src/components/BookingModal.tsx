@@ -75,9 +75,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     if (initialItem) {
       setServiceType(initialItem.type);
       setSelectedServiceId(initialItem.item.id);
-    } else if (hairstyles.length > 0) {
-      setServiceType('hairstyle');
-      setSelectedServiceId(hairstyles[0].id);
+    } else {
+      const visible = hairstyles.filter((h) => !h.isHidden);
+      if (visible.length > 0) {
+        setServiceType('hairstyle');
+        setSelectedServiceId(visible[0].id);
+      }
     }
     setConfirmedBooking(null);
   }, [initialItem, hairstyles]);
@@ -221,10 +224,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <div className="space-y-2 max-w-md mx-auto pt-2">
                 {/* Send to WhatsApp for fast confirmation */}
                 <a
-                  href={createWhatsAppLink(
-                    settings.whatsapp,
-                    `Hello Crown & Glam! I just booked an appointment online (Booking ID: ${confirmedBooking.id}). Style: ${confirmedBooking.serviceName} on ${confirmedBooking.date} at ${confirmedBooking.timeSlot}. Name: ${confirmedBooking.customerName}.`
-                  )}
+                  href="https://wa.link/ufocc9"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all"
@@ -315,7 +315,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     className="w-full p-3 bg-stone-50 border border-stone-200 rounded-xl text-sm font-semibold text-stone-900 focus:ring-2 focus:ring-amber-800/20 focus:outline-none"
                   >
                     {serviceType === 'hairstyle' ? (
-                      hairstyles.map((h) => (
+                      hairstyles.filter((h) => !h.isHidden).map((h) => (
                         <option key={h.id} value={h.id}>
                           {h.name} — {formatCurrency(h.price, h.currency)} ({h.estimatedDuration})
                         </option>

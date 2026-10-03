@@ -26,7 +26,7 @@ export const TrendingSection: React.FC<TrendingSectionProps> = ({
   onViewAllHairstyles,
   onViewAllWigs,
 }) => {
-  const trendingStyles = hairstyles.filter((h) => h.isTrending).slice(0, 4);
+  const trendingStyles = hairstyles.filter((h) => h.isTrending && !h.isHidden).slice(0, 8);
   const trendingWigs = wigs.filter((w) => w.isTrending).slice(0, 4);
 
   return (
